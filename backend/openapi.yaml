@@ -1,0 +1,98 @@
+openapi: 3.0.3
+info:
+  title: RTSP Overlay API
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000
+paths:
+  /api/health:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: OK
+  /api/overlays:
+    get:
+      summary: List overlays
+      responses:
+        '200':
+          description: List of overlays
+    post:
+      summary: Create overlay
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Overlay'
+      responses:
+        '201':
+          description: Created
+  /api/overlays/{id}:
+    get:
+      summary: Get overlay
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Overlay
+        '404':
+          description: Not found
+    put:
+      summary: Update overlay
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Overlay'
+      responses:
+        '200':
+          description: Updated
+        '404':
+          description: Not found
+    delete:
+      summary: Delete overlay
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Deleted
+        '404':
+          description: Not found
+components:
+  schemas:
+    Overlay:
+      type: object
+      properties:
+        name: { type: string }
+        type: { type: string, enum: [text, image] }
+        content: { type: string }
+        position:
+          type: object
+          properties: { x: { type: number }, y: { type: number } }
+        size:
+          type: object
+          properties: { w: { type: number }, h: { type: number } }
+        style:
+          type: object
+          properties:
+            color: { type: string }
+            fontSize: { type: number }
+            opacity: { type: number, minimum: 0, maximum: 1 }
+            bg: { type: string }
+        zIndex: { type: integer }
