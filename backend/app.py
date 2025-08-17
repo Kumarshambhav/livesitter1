@@ -13,7 +13,7 @@ CORS(app)
 
 # Mongo setup
 client = MongoClient(MONGO_URI)
-db = client.get_default_database()
+db = client["livesitter"]
 overlays = db.get_collection("overlays")
 
 def serialize(doc):
